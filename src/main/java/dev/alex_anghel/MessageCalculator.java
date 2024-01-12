@@ -27,19 +27,19 @@ public class MessageCalculator {
         initialPosts = listDiff.getPosts();
     }
 
-    @Scheduled(every = "10s")
+    @Scheduled(every = "60s")
     public void run() {
 //        message();
         messagePosts();
     }
 
-//    public String message() {
-//        String message = listDiff.compareFirstPost(initialPost);
-//        if (!message.contains("no updates")) {
-//            bot.sendMessage(message);
-//        }
-//        return message;
-//    }
+    public String message() {
+        String message = listDiff.compareFirstPost(initialPost);
+        if (!message.contains("no updates")) {
+            bot.sendMessage(message);
+        }
+        return message;
+    }
 
     public String messagePosts() {
         String message = listDiff.comparePosts(initialPosts);
@@ -49,11 +49,11 @@ public class MessageCalculator {
         return message;
     }
 
-//    @GET()
-//    @Path("info")
-//    public String getPost() {
-//        return initialPost;
-//    }
+    @GET()
+    @Path("first")
+    public String getPost() {
+        return initialPost;
+    }
 
     @GET()
     @Path("all")

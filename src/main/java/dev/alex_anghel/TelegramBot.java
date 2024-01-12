@@ -1,6 +1,8 @@
 package dev.alex_anghel;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -13,6 +15,8 @@ import javax.ws.rs.core.Response;
 
 @ApplicationScoped
 public class TelegramBot {
+
+    Logger LOG = LoggerFactory.getLogger(TelegramBot.class);
 
     @ConfigProperty(name = "telegram.token")
     String token;
@@ -40,11 +44,11 @@ public class TelegramBot {
 
             JsonObject json = response.readEntity(JsonObject.class);
             boolean ok = json.getBoolean("ok", false);
-            if (!ok)
-                System.err.println("Couldn't successfully send message");
+            if (!ok) {
+                LOG.warn("Couldn't successfully send message");
+            }
         } catch (Exception e) {
-            System.err.println("Couldn't successfully send message, " + e.getMessage());
-            e.printStackTrace();
+            LOG.error("Couldn't successfully send message, ", e);
         }
     }
 

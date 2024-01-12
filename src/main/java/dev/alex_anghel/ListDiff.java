@@ -12,12 +12,11 @@ import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @ApplicationScoped
 public class ListDiff {
-    Logger LOG = LoggerFactory.getLogger(ListDiff.class);
+    final Logger LOG = LoggerFactory.getLogger(ListDiff.class);
     Document doc;
 
     @PostConstruct
@@ -27,7 +26,7 @@ public class ListDiff {
             doc = Jsoup
                     .connect("https://www.mygarage.ro/vanzari")
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
-                    .referrer("http://www.google.com")
+                    .referrer("https://www.google.com")
                     .get();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -57,9 +56,7 @@ public class ListDiff {
         List<String> differences;
         String response = LocalDateTime.now().withNano(0) + " no updates";
 
-        if (listCurrent.equals(listOld)) {
-            LOG.info(response);
-        } else {
+        if (!listCurrent.equals(listOld)) {
             differences = new ArrayList<>(listCurrent);
             differences.removeAll(listOld);
             response = LocalDateTime.now().withNano(0) + " " + differences;
