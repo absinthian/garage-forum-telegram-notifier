@@ -1,6 +1,5 @@
 package dev.alex_anghel;
 
-import io.netty.handler.logging.LogLevel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -20,8 +19,6 @@ public class ListDiff {
     Document doc;
 
     public String compareFirstPost() {
-        LOG.warn("start comparing...");
-
         String currentPost = getPost();
         String response = LocalDateTime.now().withNano(0) + " " + "no updates";
 

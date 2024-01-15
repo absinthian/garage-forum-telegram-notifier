@@ -7,6 +7,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -52,7 +53,7 @@ public class MessageCalculator {
     @GET
     @Path("tb")
     public void testBot() {
-        bot.sendMessage("test message");
+        bot.sendMessage("test message at " + LocalDateTime.now().withNano(0));
     }
 
     @GET()
