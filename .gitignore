@@ -1,4 +1,6 @@
 target/
+!target/garage-forum-telegram-notifier-runner.jar
+
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -7,3 +9,4 @@ release.properties
 
 *.iml
 .idea/
+logs

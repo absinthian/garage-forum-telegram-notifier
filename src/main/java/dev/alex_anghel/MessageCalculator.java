@@ -18,23 +18,23 @@ public class MessageCalculator {
 
     @Inject
     ListDiff listDiff;
-    String initialPost;
-    List<String> initialPosts;
+    static String initialPost;
+    static List<String> initialPosts;
 
     @PostConstruct
-    void getInitialPost() {
+    void init() {
         initialPost = listDiff.getPost();
         initialPosts = listDiff.getPosts();
     }
 
     @Scheduled(every = "60s")
     public void run() {
-//        message();
-        messagePosts();
+        message();
+//        messagePosts();
     }
 
     public String message() {
-        String message = listDiff.compareFirstPost(initialPost);
+        String message = listDiff.compareFirstPost();
         if (!message.contains("no updates")) {
             bot.sendMessage(message);
         }
@@ -42,17 +42,23 @@ public class MessageCalculator {
     }
 
     public String messagePosts() {
-        String message = listDiff.comparePosts(initialPosts);
+        String message = listDiff.comparePosts();
         if (!message.contains("no updates")) {
             bot.sendMessage(message);
         }
         return message;
     }
 
+    @GET
+    @Path("tb")
+    public void testBot() {
+        bot.sendMessage("test message");
+    }
+
     @GET()
     @Path("first")
     public String getPost() {
-        return initialPost;
+        return MessageCalculator.initialPost;
     }
 
     @GET()

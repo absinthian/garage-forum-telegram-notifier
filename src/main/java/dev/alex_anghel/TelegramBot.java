@@ -1,8 +1,8 @@
 package dev.alex_anghel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class TelegramBot {
 
-    Logger LOG = LoggerFactory.getLogger(TelegramBot.class);
+    final Logger LOG = LogManager.getLogger(TelegramBot.class);
 
     @ConfigProperty(name = "telegram.token")
     String token;
