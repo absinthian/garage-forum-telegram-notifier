@@ -31,23 +31,25 @@ public class MessageCalculator {
     @Scheduled(every = "60s")
     public void run() {
         message();
-//        messagePosts();
     }
 
-    public String message() {
+    @Scheduled(every = "PT24H", delayed = "30s")
+    public void run24h() {
+        messagePosts();
+    }
+
+    public void message() {
         String message = listDiff.compareFirstPost();
         if (!message.contains("no updates")) {
             bot.sendMessage(message);
         }
-        return message;
     }
 
-    public String messagePosts() {
+    public void messagePosts() {
         String message = listDiff.comparePosts();
         if (!message.contains("no updates")) {
             bot.sendMessage(message);
         }
-        return message;
     }
 
     @GET

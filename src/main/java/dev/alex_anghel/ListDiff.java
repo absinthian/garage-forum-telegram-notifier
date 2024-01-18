@@ -22,29 +22,31 @@ public class ListDiff {
         String currentPost = getPost();
         String response = LocalDateTime.now().withNano(0) + " " + "no updates";
 
-        if (currentPost.equals(MessageCalculator.initialPost)) {
-            LOG.info(response);
-        } else {
+        if (!currentPost.equals(MessageCalculator.initialPost)) {
             response = LocalDateTime.now().withNano(0) + " " + currentPost;
             LOG.info(response);
             MessageCalculator.initialPost = currentPost;
         }
+//        else {
+//            LOG.info(response);
+//        }
         return response;
     }
 
     public String comparePosts() {
         List<String> listCurrent = getPosts();
 
-        List<String> differences;
-        String response = LocalDateTime.now().withNano(0) + " no updates";
+//        List<String> differences;
+        String response;
+//        response = LocalDateTime.now().withNano(0) + " no updates";
 
-        if (!listCurrent.equals(MessageCalculator.initialPosts)) {
-            differences = new ArrayList<>(listCurrent);
-            differences.removeAll(MessageCalculator.initialPosts);
-            response = LocalDateTime.now().withNano(0) + " " + differences;
+//        if (!listCurrent.equals(MessageCalculator.initialPosts)) {
+//            differences = new ArrayList<>(listCurrent);
+//            differences.removeAll(MessageCalculator.initialPosts);
+            response = LocalDateTime.now().withNano(0) + " " + String.join(",\n\n", listCurrent.subList(4, listCurrent.size()));
             LOG.info(response);
             MessageCalculator.initialPosts = listCurrent;
-        }
+//        }
         return response;
     }
 
