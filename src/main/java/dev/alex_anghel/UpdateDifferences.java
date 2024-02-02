@@ -14,18 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class ListDiff {
-    final Logger LOG = LogManager.getLogger(ListDiff.class);
+public class UpdateDifferences {
+    final Logger LOG = LogManager.getLogger(UpdateDifferences.class);
     Document doc;
 
     public String compareFirstPost() {
         String currentPost = getPost();
         String response = LocalDateTime.now().withNano(0) + " " + "no updates";
 
-        if (!currentPost.equals(MessageCalculator.initialPost)) {
+        if (!currentPost.equals(MessageController.initialPost)) {
             response = LocalDateTime.now().withNano(0) + " " + currentPost;
             LOG.info(response);
-            MessageCalculator.initialPost = currentPost;
+            MessageController.initialPost = currentPost;
         }
 //        else {
 //            LOG.info(response);
@@ -45,7 +45,7 @@ public class ListDiff {
 //            differences.removeAll(MessageCalculator.initialPosts);
             response = LocalDateTime.now().withNano(0) + " " + String.join(",\n\n", listCurrent.subList(4, listCurrent.size()));
             LOG.info(response);
-            MessageCalculator.initialPosts = listCurrent;
+            MessageController.initialPosts = listCurrent;
 //        }
         return response;
     }
