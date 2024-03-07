@@ -36,10 +36,10 @@ public class MessageController {
         message();
     }
 
-    @Scheduled(every = "PT24H", delayed = "30s")
-    public void run24h() {
-        messagePosts();
-    }
+//    @Scheduled(every = "PT24H", delayed = "30s")
+//    public void run24h() {
+//        messagePosts();
+//    }
 
     public void message() {
         String message = updateDifferences.compareFirstPost();
