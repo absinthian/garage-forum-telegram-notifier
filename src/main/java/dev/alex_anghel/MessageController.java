@@ -1,6 +1,9 @@
 package dev.alex_anghel;
 
 import io.quarkus.scheduler.Scheduled;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -41,6 +44,11 @@ public class MessageController {
 //        messagePosts();
 //    }
 
+    @Scheduled(every = "PT2H")
+    public void runNas() {
+        bot.sendMessage(getNas());
+    }
+
     public void message() {
         String message = updateDifferences.compareFirstPost();
         if (!message.contains("no updates")) {
@@ -71,6 +79,27 @@ public class MessageController {
     @Path("all")
     public List<String> getAllPosts() {
         return updateDifferences.getPosts();
+    }
+
+    @GET
+    @Path("nas")
+    public String getNas() {
+        Document doc;
+        String product;
+        try {
+            // fetching the target website
+            product = "https://www.emag.ro/network-attached-storage-synology-diskstation-cu-procesor-intel-celeron-j4125-2ghz-2-bay-2gb-ddr4-ds224/pd/D9ZY6YYBM/";
+            doc = Jsoup.connect(product).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").referrer("https://www.google.com").get();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Elements price = doc.selectXpath("//*[@id=\"main-container\"]/section[3]/div/div[1]/div[2]/div/div[2]/div[2]/form/div/div[1]/div[1]/div/div/div[1]/p[2]");
+        Elements priceResigilat = doc.getElementsByClass("product-new-price has-deal");
+        if (priceResigilat.toString().isEmpty()) {
+            return product + " pret intreg: " + price.text() + "\n nu are resigilate";
+        }
+        return product + " pret intreg: " + price.text() + "\n resigilat la \n" + String.join("\n", priceResigilat.text().split(" Lei"));
     }
 
     @GET
