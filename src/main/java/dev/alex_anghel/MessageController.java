@@ -4,6 +4,8 @@ import io.quarkus.scheduler.Scheduled;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -13,12 +15,14 @@ import javax.ws.rs.Path;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
 @Path("/")
 public class MessageController {
+    private final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Inject
     TelegramBot bot;
@@ -47,6 +51,7 @@ public class MessageController {
     @Scheduled(every = "PT2H")
     public void runNas() {
         bot.sendMessage(getNas());
+        LOG.info("nas was searched");
     }
 
     public void message() {
@@ -89,7 +94,10 @@ public class MessageController {
         try {
             // fetching the target website
             product = "https://www.emag.ro/network-attached-storage-synology-diskstation-cu-procesor-intel-celeron-j4125-2ghz-2-bay-2gb-ddr4-ds224/pd/D9ZY6YYBM/";
-            doc = Jsoup.connect(product).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36").referrer("https://www.google.com").get();
+            doc = Jsoup.connect(product)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36")
+                    .referrer("https://www.google.com")
+                    .get();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
